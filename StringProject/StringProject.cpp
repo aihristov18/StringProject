@@ -1,6 +1,14 @@
 #include <iostream>
 using namespace std;
 
+void DisplayParagraph(string words[])
+{
+	srand(time(NULL));
+
+	cout << "It was a question of which of " << words[rand() % 12] << " two she On the one " << words[rand() % 12] << ", the choice seemed simple.\nThe more expensive one " << words[rand() % 12] << " a brand name would be the choice of " << words[rand() % 12] << ". It was the easy choice.\nThe safe choice. But she wasn't " << words[rand() % 12] << " she actually preferred it.";
+
+}
+
 int showScore(int score, int highScore)
 {
     if (score > highScore)
@@ -43,6 +51,10 @@ bool mainMenu()
 
 int main()
 {
+	string words[] = { "BOAT", "VAST", "BODY", "LAYS", "RAGS", "FEED", "SOUL", "NOTE", "TAKE", "EARN", "CARS", "TELL" };
+
+	DisplayParagraph(words);
+
     bool showMenu;
     do
     {
