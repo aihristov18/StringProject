@@ -1,15 +1,47 @@
 #include <iostream>
+#include <fstream>
+#include <stdlib.h>
+#include <string>
+#include <time.h>
+#include <Windows.h>
 using namespace std;
+
+void takeFromFile(string* initWords, int& cnt)
+{
+    string word;
+    ifstream fileRead("words.txt");
+
+    while (getline(fileRead, word))
+    {
+        initWords[cnt] = word;
+        cnt++;
+    }
+
+    fileRead.close();
+}
+
+void selectWords(string* initWords, string* finalFour, int cnt)
+{
+    for (int i = 0; i < 4; i++)
+    {
+        string duma = initWords[rand() % cnt];
+        finalFour[i] = duma;
+    }
+}
+
+string selectPassword(string* finalFour)
+{
+    string password = finalFour[rand() % 4];
+
+    return password;
+}
 
 void DisplayParagraph(string words[])
 {
-	srand(time(NULL));
-
-	cout << "It was a question of which of " << words[rand() % 12] << " two she On the one " << words[rand() % 12] << ", the choice seemed simple.\nThe more expensive one " << words[rand() % 12] << " a brand name would be the choice of " << words[rand() % 12] << ". It was the easy choice.\nThe safe choice. But she wasn't " << words[rand() % 12] << " she actually preferred it.";
-
+    cout << "It was a question of which of " << words[0] << " two she On the one " << words[1] << ", the choice seemed simple.\nThe more expensive one " << words[2] << " a brand name would be the choice of " << words[3] << ". It was the easy choice.\nThe safe choice.";
 }
 
-int showScore(int score, int highScore)
+void showScore(int score, int highScore)
 {
     if (score > highScore)
     {
@@ -23,6 +55,7 @@ int showScore(int score, int highScore)
 
 bool mainMenu()
 {
+
     int choice;
     cout << "...:::MAIN MENU:::..." << endl;
     cout << "1) Start game" << endl;
@@ -32,30 +65,37 @@ bool mainMenu()
     cin >> choice;
     switch (choice)
     {
-        case 1:
+    case 1:
 
-            break;
-        case 2:
+        break;
+    case 2:
 
-            break;
-        case 3:
-            return false;
-            break;
-        default:
-            cout << "Invalid input" << endl;
-            return false;
-            break;
+        break;
+    case 3:
+        return false;
+        break;
+    default:
+        cout << "Invalid input" << endl;
+        return false;
+        break;
     }
     return true;
 }
 
 int main()
 {
-	string words[] = { "BOAT", "VAST", "BODY", "LAYS", "RAGS", "FEED", "SOUL", "NOTE", "TAKE", "EARN", "CARS", "TELL" };
+    srand(time(NULL));
 
-	DisplayParagraph(words);
+    int cnt = 0;
+    string initWords[250], finalFour[10];
+
+    takeFromFile(initWords, cnt);
+    selectWords(initWords, finalFour, cnt);
+
+    string password = selectPassword(finalFour);
 
     bool showMenu;
+
     do
     {
         showMenu = mainMenu();
