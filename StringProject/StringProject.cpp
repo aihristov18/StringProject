@@ -1,6 +1,18 @@
 #include <iostream>
 using namespace std;
 
+int showScore(int score, int highScore)
+{
+    if (score > highScore)
+    {
+        cout << "Highscore: " << score << endl;
+    }
+    else
+    {
+        cout << "Highscore: " << highScore << endl;
+    }
+}
+
 bool mainMenu()
 {
     int choice;
