@@ -44,37 +44,66 @@ void DisplayParagraph(string words[])
 void CheckPassword(string password, string words[], string passwordEntry, int cnt, int attempts = 1)
 {
 
-	cout << "Please enter your password: ";
+    cout << "Please enter your password: ";
 
-	getline(cin, passwordEntry, '\n');
+    getline(cin, passwordEntry, '\n');
 
-	while (passwordEntry != password && attempts <= 2)
-	{
-		cout << "Please try again: ";
-		getline(cin, passwordEntry, '\n');
-		attempts++;
-	}
-
-	if (passwordEntry == password && attempts <= 3)
-	{
-		cout << "Access granted";
-	}
-	else
-	{
-		cout << "Sorry, only allowed 3 attempts";
-	}
-}
-
-void showScore(int score, int highScore)
-{
-    if (score > highScore)
+    while (passwordEntry != password && attempts <= 2)
     {
-        cout << "Highscore: " << score << endl;
+        cout << "Please try again: ";
+        getline(cin, passwordEntry, '\n');
+        attempts++;
+    }
+
+    if (passwordEntry == password && attempts <= 3)
+    {
+        cout << "Access granted";
     }
     else
     {
-        cout << "Highscore: " << highScore << endl;
+        cout << "Sorry, only allowed 3 attempts";
     }
+}
+
+string writeScore(string ign, int score)
+{
+    ifstream read;
+    ofstream append;
+
+    string line;
+
+    read.open("source.txt");
+    append.open("source.txt", ios::app);
+
+    bool isEmpty = read.peek() == EOF;
+
+    if (isEmpty)
+    {
+        append << ign << endl;
+        append << "BREAK" << endl;
+
+        return 0;
+    }
+
+    while (getline(read, line))
+    {
+        string sline;
+
+        if (line == "BREAK")
+        {
+            getline(read, sline);
+            if (sline.empty())
+            {
+                append << ign << endl;
+                append << score << endl;
+                append << "BREAK" << endl;
+                return 0;
+            }
+        }
+    }
+
+    read.close();
+    append.close();
 }
 
 bool mainMenu()
