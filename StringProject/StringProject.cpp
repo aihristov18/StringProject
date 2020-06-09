@@ -41,6 +41,30 @@ void DisplayParagraph(string words[])
     cout << "It was a question of which of " << words[0] << " two she On the one " << words[1] << ", the choice seemed simple.\nThe more expensive one " << words[2] << " a brand name would be the choice of " << words[3] << ". It was the easy choice.\nThe safe choice.";
 }
 
+void CheckPassword(string password, string words[], string passwordEntry, int cnt, int attempts = 1)
+{
+
+	cout << "Please enter your password: ";
+
+	getline(cin, passwordEntry, '\n');
+
+	while (passwordEntry != password && attempts <= 2)
+	{
+		cout << "Please try again: ";
+		getline(cin, passwordEntry, '\n');
+		attempts++;
+	}
+
+	if (passwordEntry == password && attempts <= 3)
+	{
+		cout << "Access granted";
+	}
+	else
+	{
+		cout << "Sorry, only allowed 3 attempts";
+	}
+}
+
 void showScore(int score, int highScore)
 {
     if (score > highScore)
