@@ -6,25 +6,25 @@
 #include <Windows.h>
 using namespace std;
 
-void takeFromFile(string* initWords, int& cnt)
+void takeFromFile(string* allWords, int& cnt)
 {
     string word;
     ifstream fileRead("words.txt");
 
     while (getline(fileRead, word))
     {
-        initWords[cnt] = word;
+        allWords[cnt] = word;
         cnt++;
     }
 
     fileRead.close();
 }
 
-void selectWords(string* initWords, string* finalFour, int cnt)
+void selectWords(string* allWords, string* finalFour, int cnt)
 {
     for (int i = 0; i < 4; i++)
     {
-        string duma = initWords[rand() % cnt];
+        string duma = allWords[rand() % cnt];
         finalFour[i] = duma;
     }
 }
@@ -38,34 +38,79 @@ string selectPassword(string* finalFour)
 
 void DisplayParagraph(string words[])
 {
-    cout << "It was a question of which of " << words[0] << " two she On the one " << words[1] << ", the choice seemed simple.\nThe more expensive one " << words[2] << " a brand name would be the choice of " << words[3] << ". It was the easy choice.\nThe safe choice.";
+    cout << "It was a question of which of " << words[0] << " two she On the one " << words[1] << ", the choice seemed simple.\nThe more expensive one " << words[2] << " a brand name would be the choice of " << words[3] << ". It was the easy choice.\nThe safe choice." << endl;
+    cout << endl;
 }
 
-void CheckPassword(string password, string words[], string passwordEntry, int cnt, int attempts = 1)
+string runGame(string* finalFour, string* allWords, int& cnt)
 {
+    takeFromFile(allWords, cnt);
 
-    cout << "Please enter your password: ";
+    selectWords(allWords, finalFour, cnt);
+    string pass = selectPassword(finalFour);
 
-    getline(cin, passwordEntry, '\n');
+labelChoice:
+    system("CLS");
 
-    while (passwordEntry != password && attempts <= 2)
+    DisplayParagraph(finalFour);
+
+    int attempts = 2, charsGuessed = 0,choice;
+
+    bool gameEnd = false;
+
+    string userChoice;
+
+    do
     {
-        cout << "Please try again: ";
-        getline(cin, passwordEntry, '\n');
-        attempts++;
-    }
+        cout << endl;
+        cout << "Number of attempts left: " << attempts << endl;
+        cout << "Enter word choice: "; cin >> userChoice;
+        
+        cout << endl;
 
-    if (passwordEntry == password && attempts <= 3)
-    {
-        cout << "Access granted";
-    }
-    else
-    {
-        cout << "Sorry, only allowed 3 attempts";
-    }
+        if (userChoice == finalFour[0] or userChoice == finalFour[1] or userChoice == finalFour[2] or userChoice == finalFour[3])
+        {
+            if (userChoice == pass)
+            {
+                cout << "Congratulations! You guessed the word!" << endl
+                    << endl;
+                cout << "Thank you for playing!" << endl;
+                Sleep(2*1000);
+                gameEnd = true;
+            }
+            else
+            {
+
+                for (int i = 0; i < 4; i++)
+                {
+                    if (userChoice[i] == pass[i])
+                    {
+                        charsGuessed++;
+                    }
+                }
+
+                cout << "You guessed " << charsGuessed << "/4 symbols. Try again!" << endl;
+                charsGuessed = 0;
+                attempts--;
+
+                if (attempts == 0)
+                {
+                    cout << "Thank you for playing!" << endl;
+                    Sleep(2*1000);
+                    gameEnd = true;
+                }
+            }
+        }
+        else
+        {
+            goto labelChoice;
+        }
+
+    } while (gameEnd != true);
+    return 0;
 }
 
-string writeScore(string ign, int score)
+/*string writeScore(string ign, int score)
 {
     ifstream read;
     ofstream append;
@@ -105,31 +150,67 @@ string writeScore(string ign, int score)
     read.close();
     append.close();
 }
+*/
 
-bool mainMenu()
+// not enough time to finish score system
+
+
+bool mainMenu(string* finalFour, string* allWords, int& cnt)
 {
+    system("CLS");
 
     int choice;
-    cout << "...:::MAIN MENU:::..." << endl;
-    cout << "1) Start game" << endl;
-    cout << "2) Show score" << endl;
-    cout << "3) Exit game" << endl;
-    cout << "Your choice is: ";
-    cin >> choice;
+labelMenu:
+    cout << "...:::MAIN MENU:::..." << endl
+        <<endl
+        << "(1) Start game" << endl
+        << endl
+        << "(2) Show instructions" << endl
+        << endl
+        << "(3) Quit" << endl
+        << endl
+        << "Enter choice: "; cin >> choice;
     switch (choice)
     {
     case 1:
-
+        runGame(finalFour, allWords, cnt);
         break;
     case 2:
 
+        int choice2;
+
+        system("CLS");
+        cout << endl
+            << "Instructions on how to play:" << endl
+            << endl
+            << "1. Upon choosing to start a game, a paragraph with four uppercase words will be displayed on the screen. One of the words is the password." << endl
+            << endl
+            << "2. To make your guess, enter the desired word as you see it on screen (All capital letters!)" << endl
+            << endl
+            << "3. If you guessed the word, the game will end and you'll have to restart the program to play again." << endl
+            << endl
+            << "4. If your guess is wrong, the number of letters that are the same as the password and in the same position will be displayed alongside your remaining attempts." << endl
+            << endl
+            << "Exit instructions?" << endl
+            << "(1) Yes" << endl
+            << endl
+            << "Enter choice: "; cin >> choice2;
+
+        if (choice2 == 1)
+        {
+            system("CLS");
+            goto labelMenu;
+        }
+     
         break;
     case 3:
         return false;
         break;
     default:
         cout << "Invalid input" << endl;
-        return false;
+        Sleep(2*1000);
+        system("CLS");
+        goto labelMenu;
         break;
     }
     return true;
@@ -140,17 +221,12 @@ int main()
     srand(time(NULL));
 
     int cnt = 0;
-    string initWords[250], finalFour[10];
-
-    takeFromFile(initWords, cnt);
-    selectWords(initWords, finalFour, cnt);
-
-    string password = selectPassword(finalFour);
+    string allWords[250], finalFour[10];
 
     bool showMenu;
 
     do
     {
-        showMenu = mainMenu();
+        showMenu = mainMenu(finalFour, allWords, cnt);
     } while (showMenu);
 }
