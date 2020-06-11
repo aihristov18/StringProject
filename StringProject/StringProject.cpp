@@ -110,51 +110,6 @@ labelChoice:
     return 0;
 }
 
-/*string writeScore(string ign, int score)
-{
-    ifstream read;
-    ofstream append;
-
-    string line;
-
-    read.open("source.txt");
-    append.open("source.txt", ios::app);
-
-    bool isEmpty = read.peek() == EOF;
-
-    if (isEmpty)
-    {
-        append << ign << endl;
-        append << "BREAK" << endl;
-
-        return 0;
-    }
-
-    while (getline(read, line))
-    {
-        string sline;
-
-        if (line == "BREAK")
-        {
-            getline(read, sline);
-            if (sline.empty())
-            {
-                append << ign << endl;
-                append << score << endl;
-                append << "BREAK" << endl;
-                return 0;
-            }
-        }
-    }
-
-    read.close();
-    append.close();
-}
-*/
-
-// not enough time to finish score system
-
-
 bool mainMenu(string* finalFour, string* allWords, int& cnt)
 {
     system("CLS");
