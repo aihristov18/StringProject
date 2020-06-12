@@ -4,6 +4,7 @@
 #include <string>
 #include <time.h>
 #include <Windows.h>
+#include "functions.h"
 using namespace std;
 
 void takeFromFile(string* allWords, int& cnt)
@@ -54,7 +55,7 @@ labelChoice:
 
     DisplayParagraph(finalFour);
 
-    int attempts = 2, charsGuessed = 0,choice;
+    int attempts = 3, charsGuessed = 0, choice;
 
     bool gameEnd = false;
 
@@ -65,7 +66,7 @@ labelChoice:
         cout << endl;
         cout << "Number of attempts left: " << attempts << endl;
         cout << "Enter word choice: "; cin >> userChoice;
-        
+
         cout << endl;
 
         if (userChoice == finalFour[0] or userChoice == finalFour[1] or userChoice == finalFour[2] or userChoice == finalFour[3])
@@ -75,7 +76,7 @@ labelChoice:
                 cout << "Congratulations! You guessed the word!" << endl
                     << endl;
                 cout << "Thank you for playing!" << endl;
-                Sleep(2*1000);
+                Sleep(2 * 1000);
                 gameEnd = true;
             }
             else
@@ -96,7 +97,7 @@ labelChoice:
                 if (attempts == 0)
                 {
                     cout << "Thank you for playing!" << endl;
-                    Sleep(2*1000);
+                    Sleep(2 * 1000);
                     gameEnd = true;
                 }
             }
@@ -117,7 +118,7 @@ bool mainMenu(string* finalFour, string* allWords, int& cnt)
     int choice;
 labelMenu:
     cout << "...:::MAIN MENU:::..." << endl
-        <<endl
+        << endl
         << "(1) Start game" << endl
         << endl
         << "(2) Show instructions" << endl
@@ -156,32 +157,17 @@ labelMenu:
             system("CLS");
             goto labelMenu;
         }
-     
+
         break;
     case 3:
         return false;
         break;
     default:
         cout << "Invalid input" << endl;
-        Sleep(2*1000);
+        Sleep(2 * 1000);
         system("CLS");
         goto labelMenu;
         break;
     }
     return true;
-}
-
-int main()
-{
-    srand(time(NULL));
-
-    int cnt = 0;
-    string allWords[250], finalFour[10];
-
-    bool showMenu;
-
-    do
-    {
-        showMenu = mainMenu(finalFour, allWords, cnt);
-    } while (showMenu);
 }
